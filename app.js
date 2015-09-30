@@ -117,13 +117,8 @@ app.post('/account/password', passportConf.isAuthenticated, userController.postU
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 
-/**
- * API examples routes.
- */
-app.get('/api', apiController.getApi);
-app.get('/api/github', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getGithub); //Professional Use
-app.get('/api/linkedin', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getLinkedin); //Professional Use
-
+//API Route
+app.get('/api/linkedin', apiController.getLinkedin); 
 
 /**
  * OAuth authentication routes. (Sign in)
@@ -142,10 +137,7 @@ app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRe
 
 
 
-
-/**
- * Error Handler.
- */
+//Error Handler
 app.use(errorHandler());
 
 /**
