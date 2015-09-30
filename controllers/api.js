@@ -11,10 +11,7 @@ var Linkedin = require('node-linkedin')(secrets.linkedin.clientID, secrets.linke
 
 var _ = require('lodash');
 
-/**
- * GET /api
- * List of API examples.
- */
+
 exports.getApi = function(req, res) {
   res.render('api/index', {
     title: 'API Examples'
@@ -23,10 +20,7 @@ exports.getApi = function(req, res) {
 
 
 
-/**
- * GET /api/github
- * GitHub API Example.
- */
+
 exports.getGithub = function(req, res, next) {
   var token = _.find(req.user.tokens, { kind: 'github' });
   var github = new Github({ token: token.accessToken });
@@ -43,10 +37,6 @@ exports.getGithub = function(req, res, next) {
 
 
 
-/**
- * GET /api/linkedin
- * LinkedIn API example.
- */
 exports.getLinkedin = function(req, res, next) {
   var token = _.find(req.user.tokens, { kind: 'linkedin' });
   var linkedin = Linkedin.init(token.accessToken);
@@ -59,9 +49,6 @@ exports.getLinkedin = function(req, res, next) {
   });
 
 
-/**
- * GET /api/instagram
- * Instagram API example.
- */
+
 
 };

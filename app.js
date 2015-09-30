@@ -100,6 +100,8 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
  * Primary app routes.
  */
 app.get('/', homeController.index);
+app.get('/developers', homeController.developers);
+app.get('/employers', homeController.employers);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
@@ -138,9 +140,7 @@ app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRe
   res.redirect(req.session.returnTo || '/');
 });
 
-/**
- * OAuth authorization routes. (API examples)
- */
+
 
 
 /**
