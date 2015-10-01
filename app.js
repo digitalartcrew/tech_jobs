@@ -119,8 +119,7 @@ app.post('/account/password', passportConf.isAuthenticated, userController.postU
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 
-//API Route
-// app.get('/api/linkedin', apiController.getLinkedin); 
+
 
 /**
  * OAuth authentication routes. (Sign in)
@@ -144,5 +143,6 @@ app.use(errorHandler());
 
 app.listen(3000, function () {
   console.log("Starting a server on localhost:3000");
+  
 });
 module.exports = app;

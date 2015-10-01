@@ -22,12 +22,15 @@ exports.getGithub = function(req, res, next) {
 
 
 exports.getLinkedin = function(req, res, next) {
+
   var token = _.find(req.user.tokens, { kind: 'linkedin' });
   var linkedin = Linkedin.init(token.accessToken);
-   var techCompany = $("#techCompany").val();
+   // var techCompany = $("#techCompany").val();
+
+ 
  
 
-  linkedin.companies_search.name(techCompany, 1, function(err, company) {
+  linkedin.companies_search.name(facebook, 1, function(err, company) {
       console.log("WE MESSED UP!", err);
       
       var companyData = {};
@@ -41,6 +44,7 @@ exports.getLinkedin = function(req, res, next) {
       res.locals.company = companyData;
       console.log("HERE'S WHAT WERE SENDING BACK!", companyData);
       next();
+      console.log('I see you function!');
       // res.render('api/linkedin');
   });
 
