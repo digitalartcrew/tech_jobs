@@ -55,10 +55,7 @@ exports.logout = function(req, res) {
   res.redirect('/');
 };
 
-/**
- * GET /signup
- * Signup page.
- */
+//This function get the page that will be rendered to the user to sign up
 exports.getSignup = function(req, res) {
   if (req.user) return res.redirect('/');
   res.render('account/signup', {
@@ -66,10 +63,9 @@ exports.getSignup = function(req, res) {
   });
 };
 
-/**
- * POST /signup
- * Create a new local account.
- */
+
+//Creates a new local account for the user. It uses the express validator to validate user by using the input
+//variable and passing it a callback
 exports.postSignup = function(req, res, next) {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password must be at least 4 characters long').len(4);

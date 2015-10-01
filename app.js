@@ -26,7 +26,7 @@ var homeController = require('./controllers/home');
 var employersController = require('./controllers/employers');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
-var developersController = require('./controllers/developers');
+
 
 
 //This sections sets and requires variables from the config folder which sets up authentication and IDs, keys and scope.
@@ -38,11 +38,13 @@ var passportConf = require('./config/passport');
 var app = express();
 
 //Rewrite and read Little Mongo DB Book
+//Make connection from config/secrets.js to connect MongoDB
 mongoose.connect(secrets.db);
-mongoose.connection.on('error', function() {
-  console.log('MongoDB Connection Error. Please make sure that MongoDB is running.'.red);
-  process.exit(1);
-});
+mongoose.set('debug', true);
+// mongoose.connection.on('error', function() {
+//   console.log('MongoDB Connection Error. Please make sure that MongoDB is running.'.red);
+//   process.exit(1);
+// });
 
 
 //Express imports the framework into your app. path is a core Node working with and handling paths such as 
@@ -99,11 +101,11 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 
 //Setting up Routes to be used with the application
 app.get('/', homeController.index);
-app.get('/developers', developersController.developers);
+
 
 //Setting up application to go to the employers path. The accessing the searchController to
 //go inside of the search.js which exports 
-app.get('/employers', employersController.employers, apiController.getLinkedin);
+app.get('/employers', passportConf.isAuthenticated, employersController.employers, apiController.getLinkedin);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
@@ -111,6 +113,7 @@ app.get('/forgot', userController.getForgot);
 app.post('/forgot', userController.postForgot);
 app.get('/reset/:token', userController.getReset);
 app.post('/reset/:token', userController.postReset);
+//Makes a request to render a user sign up page
 app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
 app.get('/account', passportConf.isAuthenticated, userController.getAccount);

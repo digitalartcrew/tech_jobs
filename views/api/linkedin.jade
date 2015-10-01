@@ -1,23 +1,16 @@
 extends ../layout
 
 block content
-  .page-header
-    h2
-     
-      | Find A Tech Job
+  form
+    label(for='techCompany')
+    h1 Search for a Tech Company
+    p
+    input#techCompany(type='text', value='')
+  h2
+  p#description
+  p#industry
+  p#city
+  p#url
 
-
-           form
-          label(for='techCompany')
-            h1 Search for a Tech Company
-      p
-        input#techCompany(type='text', value='')
-      h2
-      p#description
-      p#industry
-      p#city
-      p#url
- 
-
-
-
+  
+  

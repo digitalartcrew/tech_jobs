@@ -122,9 +122,7 @@ passport.use(new LinkedInStrategy(secrets.linkedin, function(req, accessToken, r
 
 
 
-/**
- * Login Required middleware.
- */
+//When this function is passed a callback it verifues if the user has been authenticate then it goes to the next function
 exports.isAuthenticated = function(req, res, next) {
   if (req.isAuthenticated()) return next();
   res.redirect('/login');
@@ -142,3 +140,7 @@ exports.isAuthorized = function(req, res, next) {
     res.redirect('/auth/' + provider);
   }
 };
+
+
+
+//

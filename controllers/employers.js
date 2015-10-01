@@ -3,7 +3,7 @@
 //for the file and passed and object which includes the title of page to be rendered.
 //exports is node module object
 exports.employers = function(req, res) {
-  res.render('employers', {
+  res.render('api/linkedin', {
     title: 'Employer'
   });
 };

@@ -27,11 +27,12 @@ exports.getLinkedin = function(req, res, next) {
   var linkedin = Linkedin.init(token.accessToken);
    // var techCompany = $("#techCompany").val();
 
- 
- 
 
-  linkedin.companies_search.name(facebook, 1, function(err, company) {
-      console.log("WE MESSED UP!", err);
+
+  linkedin.companies_search.name('facebook', 1, function(err, company) {
+    console.log("It's Gucci!");
+  console.log(company);
+  
       
       var companyData = {};
       companyData.name = company.companies.values[0].name;
