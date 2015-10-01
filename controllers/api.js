@@ -1,3 +1,5 @@
+
+//For this section the export module was used over the module.exports so that so the functions can be called independently
 var secrets = require('../config/secrets');
 var querystring = require('querystring');
 var validator = require('validator');
@@ -22,8 +24,10 @@ exports.getGithub = function(req, res, next) {
 exports.getLinkedin = function(req, res, next) {
   var token = _.find(req.user.tokens, { kind: 'linkedin' });
   var linkedin = Linkedin.init(token.accessToken);
+   var techCompany = $("#techCompany").val();
+ 
 
-  linkedin.companies_search.name('facebook', 1, function(err, company) {
+  linkedin.companies_search.name(techCompany, 1, function(err, company) {
       console.log("WE MESSED UP!", err);
       
       var companyData = {};
@@ -37,7 +41,7 @@ exports.getLinkedin = function(req, res, next) {
       res.locals.company = companyData;
       console.log("HERE'S WHAT WERE SENDING BACK!", companyData);
       next();
-      res.render('api/linkedin');
+      // res.render('api/linkedin');
   });
 
 };

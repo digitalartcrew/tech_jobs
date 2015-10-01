@@ -21,14 +21,13 @@ passport.deserializeUser(function(id, done) {
 
 
 
-/**
- * Sign in with GitHub.
- */
+//The passport method used to set up a new GitHub Strategy instance which has has to the secrets module to create a secrets.github object 
+//access
 passport.use(new GitHubStrategy(secrets.github, function(req, accessToken, refreshToken, profile, done) {
   if (req.user) {
     User.findOne({ github: profile.id }, function(err, existingUser) {
       if (existingUser) {
-        req.flash('errors', { msg: 'There is already a GitHub account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        req.flash('errors', { msg: 'This Github account does not belong to you. Sign in with that account or delete it, then link it with your current account.' });
         done(err);
       } else {
         User.findById(req.user.id, function(err, user) {

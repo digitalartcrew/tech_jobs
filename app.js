@@ -1,7 +1,5 @@
 
-/**
- * Module dependencies.
- */
+//Module dependencies to be used within the application
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var compress = require('compression');
@@ -23,40 +21,39 @@ var expressValidator = require('express-validator');
 var sass = require('node-sass-middleware');
 
 
-/**
- * Controllers (route handlers).
- */
+//This section goes to the controller directory which requires the js file containing functions to be used within the application. 
 var homeController = require('./controllers/home');
+var employersController = require('./controllers/employers');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
+var developersController = require('./controllers/developers');
 
 
-/**
- * API keys and Passport configuration.
- */
+//This sections sets and requires variables from the config folder which sets up authentication and IDs, keys and scope.
 var secrets = require('./config/secrets');
 var passportConf = require('./config/passport');
 
-/**
- * Create Express server.
- */
+//Creates an app object which has methods for Routing HTTP request, configuring middleware, rendering
+//HTML views and registering a template engine.
 var app = express();
 
-/**
- * Connect to MongoDB.
- */
+//Rewrite and read Little Mongo DB Book
 mongoose.connect(secrets.db);
 mongoose.connection.on('error', function() {
   console.log('MongoDB Connection Error. Please make sure that MongoDB is running.'.red);
   process.exit(1);
 });
 
-/**
- * Express configuration.
- */
-app.set('port', process.env.PORT || 3000);
+
+//Express imports the framework into your app. path is a core Node working with and handling paths such as 
+//the path.join which normalize all arguments into a path string so that you can use /file
 app.set('views', path.join(__dirname, 'views'));
+
+//Allows us to render jade in our application
 app.set('view engine', 'jade');
+
+//Adding compression to use middleware which will attempt to compress response bodies using a filter called filter(req,res) which 
+//return a true of false value in deciding to compress
 app.use(compress());
 app.use(sass({
   src: path.join(__dirname, 'public'),
@@ -85,10 +82,14 @@ app.use(lusca({
   xframe: 'SAMEORIGIN',
   xssProtection: true
 }));
+
+//This means that the user object will only be valid for the lifetime of the request
 app.use(function(req, res, next) {
   res.locals.user = req.user;
   next();
 });
+
+
 app.use(function(req, res, next) {
   if (/api/i.test(req.path)) req.session.returnTo = req.path;
   next();
@@ -96,12 +97,13 @@ app.use(function(req, res, next) {
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 
-/**
- * Primary app routes.
- */
+//Setting up Routes to be used with the application
 app.get('/', homeController.index);
-app.get('/developers', homeController.developers);
-app.get('/employers', homeController.employers);
+app.get('/developers', developersController.developers);
+
+//Setting up application to go to the employers path. The accessing the searchController to
+//go inside of the search.js which exports 
+app.get('/employers', employersController.employers, apiController.getLinkedin);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
@@ -118,7 +120,7 @@ app.post('/account/delete', passportConf.isAuthenticated, userController.postDel
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 
 //API Route
-app.get('/api/linkedin', apiController.getLinkedin); 
+// app.get('/api/linkedin', apiController.getLinkedin); 
 
 /**
  * OAuth authentication routes. (Sign in)
@@ -140,11 +142,7 @@ app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRe
 //Error Handler
 app.use(errorHandler());
 
-/**
- * Start Express server.
- */
-app.listen(app.get('port'), function() {
-  console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
+app.listen(3000, function () {
+  console.log("Starting a server on localhost:3000");
 });
-
 module.exports = app;
