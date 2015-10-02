@@ -23,14 +23,16 @@ exports.getGithub = function(req, res, next) {
 
 exports.getLinkedin = function(req, res, next) {
 
+  //_.find() comes from the lodash modules and returns the index of the first element predicate returns truthy for instead of the element itself. 
   var token = _.find(req.user.tokens, { kind: 'linkedin' });
   var linkedin = Linkedin.init(token.accessToken);
+   console.log("Cool!");
    
-  req.query.company = req.query.company ? req.query.company : "google"
+  req.query.company = req.query.company ? req.query.company : "ufc";
   
   console.log("THIS IS THE QUERY",req.query);
   linkedin.companies_search.name(req.query.company, 1, function(err, company) {
-    console.log("It's Gucci!");
+   
   console.log(company.companies.values[0]);
   
       
