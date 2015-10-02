@@ -102,7 +102,6 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 //Setting up Routes to be used with the application
 app.get('/', homeController.index);
 
-
 //Setting up application to go to the employers path. The accessing the searchController to
 //go inside of the search.js which exports 
 //In this route, I rendered the api callback second to ensure it reached the next() to display employer page
@@ -128,9 +127,7 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
 
 
 
-/**
- * OAuth authentication routes. (Sign in)
- */
+//Oauth Sign-In routes
 
 app.get('/auth/github', passport.authenticate('github'));
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {
@@ -148,7 +145,7 @@ app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRe
 //Error Handler
 app.use(errorHandler());
 
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log("Starting a server on localhost:3000");
   
 });
