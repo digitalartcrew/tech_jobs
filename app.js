@@ -105,7 +105,11 @@ app.get('/', homeController.index);
 
 //Setting up application to go to the employers path. The accessing the searchController to
 //go inside of the search.js which exports 
-app.get('/employers', passportConf.isAuthenticated, employersController.employers, apiController.getLinkedin);
+//In this route, I rendered the api callback second to ensure it reached the next() to display employer page
+app.get('/employers', passportConf.isAuthenticated, apiController.getLinkedin, employersController.getCompanySearch);
+// app.post('/employers', passportConf.isAuthenticated, apiController.getLinkedin);
+app.get('/techsearch', passportConf.isAuthenticated, apiController.getLinkedin, employersController.getCompanySearch);
+
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);

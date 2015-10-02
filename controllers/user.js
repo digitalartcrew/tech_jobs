@@ -98,20 +98,14 @@ exports.postSignup = function(req, res, next) {
   });
 };
 
-/**
- * GET /account
- * Profile page.
- */
+//Render account route
 exports.getAccount = function(req, res) {
   res.render('account/profile', {
-    title: 'Account Management'
+    title: 'Developer Profile'
   });
 };
 
-/**
- * POST /account/profile
- * Update profile information.
- */
+//This section looks into the collection called User to find a user by id
 exports.postUpdateProfile = function(req, res, next) {
   User.findById(req.user.id, function(err, user) {
     if (err) return next(err);
@@ -333,15 +327,7 @@ exports.postForgot = function(req, res, next) {
           pass: secrets.sendgrid.password
         }
       });
-      var mailOptions = {
-        to: user.email,
-        from: 'hackathon@starter.com',
-        subject: 'Reset your password on Hackathon Starter',
-        text: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n' +
-          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-      };
+ 
       transporter.sendMail(mailOptions, function(err) {
         req.flash('info', { msg: 'An e-mail has been sent to ' + user.email + ' with further instructions.' });
         done(err, 'done');

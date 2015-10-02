@@ -1,16 +1,24 @@
 extends ../layout
 
 block content
-  form
+  form(action='/employers')
     label(for='techCompany')
     h1 Search for a Tech Company
     p
-    input#techCompany(type='text', value='')
+    input#techCompany(name="company" type='text')
+    input#searchTechJob(type='submit', value='Submit')
+
   h2
   p#description
   p#industry
   p#city
   p#url
 
-  
-  
+  #jobs.col
+
+    p= company.name
+    p= company.desc
+    p= company.industry
+    p= company.city
+    p= company.websiteUrl
+    p= company.phone
