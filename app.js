@@ -1,4 +1,4 @@
-
+  
 //Module dependencies to be used within the application
 var express = require('express');
 var cookieParser = require('cookie-parser');
@@ -39,12 +39,11 @@ var app = express();
 
 //Rewrite and read Little Mongo DB Book
 //Make connection from config/secrets.js to connect MongoDB
-mongoose.connect(secrets.db);
-mongoose.set('debug', true);
-// mongoose.connection.on('error', function() {
-//   console.log('MongoDB Connection Error. Please make sure that MongoDB is running.'.red);
-//   process.exit(1);
-// });
+
+mongoose.connection.on('error', function() {
+  console.log('MongoDB Connection Error. Please make sure that MongoDB is running.'.red);
+  process.exit(1);
+});
 
 
 //Express imports the framework into your app. path is a core Node working with and handling paths such as 
@@ -73,7 +72,7 @@ app.use(cookieParser());
 app.use(session({
   resave: true,
   saveUninitialized: true,
-  secret: secrets.sessionSecret,
+ secret: secrets.sessionSecret,
   store: new MongoStore({ url: secrets.db, autoReconnect: true })
 }));
 app.use(passport.initialize());
@@ -145,7 +144,7 @@ app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRe
 //Error Handler
 app.use(errorHandler());
 
-app.listen(process.env.PORT || 3000, function () {
+app.listen(3000, function () {
   console.log("Starting a server on localhost:3000");
   
 });
