@@ -28,6 +28,10 @@ var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 
 
+// for debugging!
+
+mongoose.set("debug",true);
+
 
 //This sections sets and requires variables from the config folder which sets up authentication and IDs, keys and scope.
 var secrets = require('./config/secrets');
@@ -39,6 +43,7 @@ var app = express();
 
 //Rewrite and read Little Mongo DB Book
 //Make connection from config/secrets.js to connect MongoDB
+mongoose.connect(secrets.db)
 
 mongoose.connection.on('error', function() {
   console.log('MongoDB Connection Error. Please make sure that MongoDB is running.'.red);
@@ -129,7 +134,9 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
 //Oauth Sign-In routes
 
 app.get('/auth/github', passport.authenticate('github'));
-app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {
+
+app.get('/auth/github/callback', passport.authenticate('github'), function(req, res) {
+  // res.send("ALL DONE!")
   res.redirect(req.session.returnTo || '/');
 });
 

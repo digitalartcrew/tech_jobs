@@ -31,6 +31,9 @@ passport.use(new GitHubStrategy(secrets.github, function(req, accessToken, refre
         done(err);
       } else {
         User.findById(req.user.id, function(err, user) {
+          if(err){
+            console.log("ERRORS!")
+          }
           user.github = profile.id;
           user.tokens.push({ kind: 'github', accessToken: accessToken });
           user.profile.name = user.profile.name || profile.displayName;
@@ -44,8 +47,15 @@ passport.use(new GitHubStrategy(secrets.github, function(req, accessToken, refre
         });
       }
     });
-  } else {
+  }
+  else {
+    // console.log("ABOUT TO GO TO THE ELSE???");
+    // console.log("ACCESS TOKEN?", accessToken);
+    // console.log("profile?", profile);
+    // console.log("THIS IS A FUNCTION?", User.findOne);
+
     User.findOne({ github: profile.id }, function(err, existingUser) {
+      if(err) console.log("FSJADKSAJKDSAJDKSAJ");
       if (existingUser) return done(null, existingUser);
       User.findOne({ email: profile._json.email }, function(err, existingEmailUser) {
         if (existingEmailUser) {
@@ -67,6 +77,7 @@ passport.use(new GitHubStrategy(secrets.github, function(req, accessToken, refre
       });
     });
   }
+
 }));
 
 

@@ -17,6 +17,7 @@ var _ = require('lodash');
 
 exports.getGithub = function(req, res, next) {
   var token = _.find(req.user.tokens, { kind: 'github' });
+  // next();
 
 };
 
